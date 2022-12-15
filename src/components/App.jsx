@@ -10,7 +10,8 @@ import Register from 'pages/Register';
 import LogIn from 'pages/LogIn';
 import Contacts from 'pages/Contacts';
 import NotFoundPage from 'pages/NotFoundPage';
-
+import { PrivateRoute } from './PrivateRoute';
+import { RestrictedRoute } from './RestrictedRoute';
 export const App = () => {
   const dispatch = useDispatch();
   const { isRefreshing } = useAuth();
@@ -24,10 +25,30 @@ export const App = () => {
   ) : (
     <Routes>
       <Route path="/" element={<Layout />}>
-        <Route index element={<Home />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/logIn" element={<LogIn />} />
-        <Route path="/contacts" element={<Contacts />} />
+        <Route
+          index
+          element={
+            <RestrictedRoute redirectTo="/contacts" component={<Home />} />
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            <RestrictedRoute redirectTo="/contacts" component={<Register />} />
+          }
+        />
+        <Route
+          path="/logIn"
+          element={
+            <RestrictedRoute redirectTo="/contacts" component={<LogIn />} />
+          }
+        />
+        <Route
+          path="/contacts"
+          element={
+            <PrivateRoute redirectTo="/login" component={<Contacts />} />
+          }
+        />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>
