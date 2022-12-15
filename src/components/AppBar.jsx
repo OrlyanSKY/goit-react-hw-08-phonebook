@@ -2,12 +2,14 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-// import Button from '@mui/material/Button';
-// import IconButton from '@mui/material/IconButton';
-// import MenuIcon from '@mui/icons-material/Menu';
 import { NavLink } from 'react-router-dom';
 import ChaletTwoToneIcon from '@mui/icons-material/ChaletTwoTone';
+
+import { UserMenu } from './UserMenu';
+import { useAuth } from 'hooks/useAuth';
+
 export default function ButtonAppBar() {
+  const { isLoggedIn } = useAuth();
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -22,19 +24,25 @@ export default function ButtonAppBar() {
             Home
             <ChaletTwoToneIcon color="inherit" />
           </Typography>
-          <Typography
-            color="inherit"
-            component={NavLink}
-            to="/register"
-            sx={{
-              mr: 2,
-            }}
-          >
-            Registration
-          </Typography>
-          <Typography color="inherit" component={NavLink} to="/logIn">
-            Login
-          </Typography>
+          {isLoggedIn ? (
+            <UserMenu />
+          ) : (
+            <Box>
+              <Typography
+                color="inherit"
+                component={NavLink}
+                to="/register"
+                sx={{
+                  mr: 2,
+                }}
+              >
+                Registration
+              </Typography>
+              <Typography color="inherit" component={NavLink} to="/logIn">
+                Login
+              </Typography>
+            </Box>
+          )}
         </Toolbar>
       </AppBar>
     </Box>

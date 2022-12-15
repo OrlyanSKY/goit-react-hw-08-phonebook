@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
-// import { useAuth } from 'hooks/useAuth';
+import { useAuth } from 'hooks/useAuth';
 import { refresh } from 'redux/auth/operations';
 
 import Layout from './Layout';
@@ -13,13 +13,15 @@ import NotFoundPage from 'pages/NotFoundPage';
 
 export const App = () => {
   const dispatch = useDispatch();
-  // const { isRefreshing } = useAuth();
+  const { isRefreshing } = useAuth();
 
   useEffect(() => {
     dispatch(refresh());
   }, [dispatch]);
 
-  return (
+  return isRefreshing ? (
+    'Refreshing user...'
+  ) : (
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />
@@ -31,7 +33,3 @@ export const App = () => {
     </Routes>
   );
 };
-
-// isRefreshing ? (
-//     'Refreshing user...'
-//   ) :
