@@ -3,6 +3,7 @@ import {
   selectVisibleContacts,
   selectLoading,
   selectError,
+  selectIsLoggedIn,
 } from 'redux/selectors';
 import { useEffect } from 'react';
 import { fetchContacts, deleteContact } from 'redux/contacts/operations';
@@ -21,13 +22,16 @@ import {
 export default function InteractiveList() {
   const dispatch = useDispatch();
   const contacts = useSelector(selectVisibleContacts) ?? [];
-
+  const isLogIn = useSelector(selectIsLoggedIn);
   const isLoading = useSelector(selectLoading);
   const error = useSelector(selectError);
 
   useEffect(() => {
+    if (!isLogIn) {
+      return;
+    }
     dispatch(fetchContacts());
-  }, [dispatch]);
+  }, [dispatch, isLogIn]);
 
   return (
     <>
