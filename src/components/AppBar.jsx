@@ -25,7 +25,7 @@ export default function ButtonAppBar() {
           <Typography
             color="inherit"
             component={NavLink}
-            to="/registration"
+            to="/register"
             sx={{
               mr: 2,
             }}

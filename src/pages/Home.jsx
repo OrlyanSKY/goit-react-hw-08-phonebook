@@ -25,7 +25,7 @@ const Home = () => {
             mt: 5,
           }}
         >
-          Please , <Link to="/registration">register</Link> or{' '}
+          Please , <Link to="/register">register</Link> or{' '}
           <Link to="/logIn">logIn</Link> to get an access to your contacts
         </Typography>
       </Box>
