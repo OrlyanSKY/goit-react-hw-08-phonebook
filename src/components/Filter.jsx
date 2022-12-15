@@ -1,7 +1,5 @@
 import { addFilterValue } from 'redux/filterSlice';
 import { useDispatch } from 'react-redux';
-
-import { Box } from '@mui/material';
 import { TextField } from '@mui/material';
 
 export const Filter = () => {
