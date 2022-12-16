@@ -9,31 +9,31 @@ import Container from '@mui/material/Container';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectContacts } from 'redux/selectors';
 import { addContact } from 'redux/contacts/operations';
+import { useForm } from 'react-hook-form';
 
 const AddNewContactForm = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+    reset,
+  } = useForm({
+    mode: 'onBlur',
+  });
   const dispatch = useDispatch();
   const contacts = useSelector(selectContacts);
 
-  const handleSubmit = event => {
-    event.preventDefault();
-    const form = event.currentTarget;
-    const name = form.elements.name.value;
+  const onSubmit = data => {
     if (
       contacts.find(
-        contact => contact.name.toLowerCase() === name.toLowerCase()
+        contact => contact.name.toLowerCase() === data.name.toLowerCase()
       )
     ) {
-      alert(`${name} is alredy in contacts `);
+      alert(`${data.name} is alredy in contacts `);
       return;
     }
-
-    dispatch(
-      addContact({
-        name,
-        number: form.elements.phone.value,
-      })
-    );
-    form.reset();
+    dispatch(addContact(data));
+    reset();
   };
 
   return (
@@ -59,14 +59,28 @@ const AddNewContactForm = () => {
         <Typography component="h1" variant="h5">
           Contacts
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <Box
+          component="form"
+          onSubmit={handleSubmit(onSubmit)}
+          noValidate
+          sx={{ mt: 1 }}
+        >
           <TextField
             margin="normal"
-            required
             fullWidth
             id="name"
             label="Name"
-            name="name"
+            {...register('name', {
+              required: 'Please, enter name',
+              minLength: {
+                value: 3,
+                message: 'min lenght 3 letters',
+              },
+            })}
+            error={!!errors?.name}
+            helperText={
+              errors?.name && errors.name.message ? errors.name.message : null
+            }
           />
           <TextField
             margin="normal"
@@ -76,9 +90,27 @@ const AddNewContactForm = () => {
             label="Phone number"
             type="tel"
             id="phone"
+            {...register('number', {
+              required: 'Please, enter number',
+              minLength: {
+                value: 6,
+                message: 'min lenght 6 numbers',
+              },
+              pattern: {
+                value: /^\d{1,13}$/,
+                message: 'only numbers , no more than 13',
+              },
+            })}
+            error={!!errors?.number}
+            helperText={
+              errors?.number && errors.number.message
+                ? errors.number.message
+                : null
+            }
           />
 
           <Button
+            disabled={!isValid}
             type="submit"
             fullWidth
             variant="contained"

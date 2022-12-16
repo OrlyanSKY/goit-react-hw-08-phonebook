@@ -9,20 +9,21 @@ import Container from '@mui/material/Container';
 
 import { useDispatch } from 'react-redux';
 import { logIn } from 'redux/auth/operations';
+import { useForm } from 'react-hook-form';
 
 const LogInForm = () => {
   const dispatch = useDispatch();
-
-  const handleSubmit = event => {
-    event.preventDefault();
-    const form = event.currentTarget;
-    dispatch(
-      logIn({
-        email: form.elements.email.value,
-        password: form.elements.password.value,
-      })
-    );
-    form.reset();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+    reset,
+  } = useForm({
+    mode: 'onBlur',
+  });
+  const onSubmit = data => {
+    dispatch(logIn(data));
+    reset();
   };
 
   return (
@@ -42,14 +43,26 @@ const LogInForm = () => {
         <Typography component="h1" variant="h5">
           Log In
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <Box
+          component="form"
+          onSubmit={handleSubmit(onSubmit)}
+          noValidate
+          sx={{ mt: 1 }}
+        >
           <TextField
             margin="normal"
-            required
             fullWidth
             id="email"
             label="Email Address"
-            name="email"
+            {...register('email', {
+              required: 'Please, enter email',
+            })}
+            error={!!errors?.email}
+            helperText={
+              errors?.email && errors.email.message
+                ? errors.email.message
+                : null
+            }
           />
           <TextField
             margin="normal"
@@ -59,9 +72,19 @@ const LogInForm = () => {
             label="Password"
             type="password"
             id="password"
+            {...register('password', {
+              required: 'Please, enter password',
+            })}
+            error={!!errors?.password}
+            helperText={
+              errors?.password && errors.password.message
+                ? errors.password.message
+                : null
+            }
           />
 
           <Button
+            disabled={!isValid}
             type="submit"
             fullWidth
             variant="contained"

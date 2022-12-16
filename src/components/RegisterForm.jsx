@@ -9,7 +9,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 
 import { useDispatch } from 'react-redux';
-import { register } from 'redux/auth/operations';
+import { register as registration } from 'redux/auth/operations';
+import { useForm } from 'react-hook-form';
 
 function Copyright(props) {
   return (
@@ -31,19 +32,18 @@ function Copyright(props) {
 
 export default function RegisterForm() {
   const dispatch = useDispatch();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+    reset,
+  } = useForm({
+    mode: 'onBlur',
+  });
 
-  const handleSubmit = event => {
-    event.preventDefault();
-    const form = event.currentTarget;
-
-    dispatch(
-      register({
-        name: form.elements.name.value,
-        email: form.elements.email.value,
-        password: form.elements.password.value,
-      })
-    );
-    form.reset();
+  const onSubmit = data => {
+    dispatch(registration(data));
+    reset();
   };
 
   return (
@@ -63,34 +63,60 @@ export default function RegisterForm() {
         <Typography component="h1" variant="h5">
           Registration
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 1 }}>
           <TextField
             margin="normal"
-            required
             fullWidth
             id="name"
             label="User name"
-            name="name"
+            {...register('name', {
+              required: 'Please, enter name',
+              minLength: {
+                value: 3,
+                message: 'min lenght 3 letters',
+              },
+            })}
+            error={!!errors?.name}
+            helperText={
+              errors?.name && errors.name.message ? errors.name.message : null
+            }
           />
           <TextField
             margin="normal"
-            required
             fullWidth
             id="email"
             label="Email Address"
             name="email"
+            {...register('email', {
+              required: 'Please, enter email',
+            })}
+            error={!!errors?.email}
+            helperText={
+              errors?.email && errors.email.message
+                ? errors.email.message
+                : null
+            }
           />
           <TextField
             margin="normal"
             required
             fullWidth
-            name="password"
             label="Password"
             type="password"
             id="password"
+            {...register('password', {
+              required: 'Please, enter password',
+            })}
+            error={!!errors?.password}
+            helperText={
+              errors?.password && errors.password.message
+                ? errors.password.message
+                : null
+            }
           />
 
           <Button
+            disabled={!isValid}
             type="submit"
             fullWidth
             variant="contained"
