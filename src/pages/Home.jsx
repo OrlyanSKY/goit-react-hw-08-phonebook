@@ -1,7 +1,7 @@
 import { Container, CssBaseline, Box, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import avatar from '../../src/contacts-icon.jpg';
+import avatar from '../contacts-icon.jpg';
 const Home = () => {
   return (
     <Container component="main">

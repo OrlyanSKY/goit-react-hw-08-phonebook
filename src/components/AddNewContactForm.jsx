@@ -1,10 +1,10 @@
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import logo from '../phone-book.jpg';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { selectContacts } from 'redux/selectors';
@@ -47,15 +47,18 @@ const AddNewContactForm = () => {
           alignItems: 'center',
         }}
       >
-        <Avatar
-          src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse2.explicit.bing.net%2Fth%3Fid%3DOIF.rwE2JgFyo%252fFQ37AWeKmoUw%26pid%3DApi&f=1&ipt=5820ce751a7ea5116a4b115a7237759c708fb6d99bd1ec585e107f0181054536&ipo=images"
+        <Box
+          component="img"
+          alt="logo"
+          src={logo}
           sx={{
             m: 1,
-            width: 150,
-            height: 150,
-            boxShadow: '-4px -1px 29px -4px rgba(0,0,0,0.89)',
+            width: 160,
+            height: 200,
+            // boxShadow: '-4px -1px 29px -4px rgba(0,0,0,0.89)',
+            // borderRadius: '50%',
           }}
-        ></Avatar>
+        ></Box>
         <Typography component="h1" variant="h5">
           Contacts
         </Typography>
