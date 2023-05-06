@@ -1,6 +1,7 @@
-import { Container, CssBaseline, Box, Typography, Avatar } from '@mui/material';
+import { Container, CssBaseline, Box, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import avatar from '../../src/contacts-icon.jpg';
 const Home = () => {
   return (
     <Container component="main">
@@ -21,16 +22,18 @@ const Home = () => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8 }}
         >
-          <Avatar
-            src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse2.explicit.bing.net%2Fth%3Fid%3DOIF.rwE2JgFyo%252fFQ37AWeKmoUw%26pid%3DApi&f=1&ipt=5820ce751a7ea5116a4b115a7237759c708fb6d99bd1ec585e107f0181054536&ipo=images"
+          <Box
+            component="img"
+            alt="avatar"
+            src={avatar}
             sx={{
               m: 1,
-              width: 200,
-              height: 200,
-              boxShadow: '-4px -1px 29px -4px rgba(0,0,0,0.89)',
+              width: 250,
+              height: 250,
+              ml: -3,
               mb: 5,
             }}
-          />
+          ></Box>
         </motion.div>
         <motion.div
           initial={{ y: 300, opacity: 0 }}
